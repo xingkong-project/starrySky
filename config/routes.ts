@@ -19,7 +19,7 @@ export default [
       { component: './404' },
     ],
   },
-  { path: '/welcome', name: '工作台', icon: 'smile', component: './Welcome' },
+  { path: '/welcome', name: '星空搭建区域', icon: 'smile', component: './Welcome' },
   {
     path: '/build',
     component: './BuildPage',

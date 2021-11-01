@@ -22,7 +22,7 @@ export default [
   { path: '/welcome', name: '工作台', icon: 'smile', component: './Welcome' },
   {
     path: '/build',
-    component: './Build',
+    component: './BuildPage',
     layout: false,
     hideInMenu: true,
   },

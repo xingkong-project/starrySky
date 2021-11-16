@@ -1,0 +1,78 @@
+.preview {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  margin: 0 40px;
+  overflow: hidden;
+  > .previewBody {
+    overflow-y: scroll;
+    background: #fff;
+    box-shadow: 0 10px 10px 0 rgba(0, 35, 78, 0.04);
+  }
+  > .footerConfig {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    height: 38px;
+    padding: 0 20px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 20px;
+    transform: translate(-50%);
+    user-select: none;
+    .configItem {
+      height: 38px;
+      padding: 0 10px;
+      color: #fff;
+      font-size: 12px;
+      line-height: 38px;
+      text-align: center;
+      cursor: pointer;
+      opacity: 0.8;
+      &:hover {
+        background: rgba(0, 0, 0, 0.9);
+        opacity: 1;
+      }
+    }
+    > .configBox {
+      display: flex;
+      height: 38px;
+      margin: 0 10px;
+      color: #fff;
+      font-size: 12px;
+      line-height: 38px;
+      > .scaleText {
+        width: 58px;
+        padding: 0 10px;
+        text-align: center;
+      }
+      .item {
+        height: 38px;
+        padding: 0 10px;
+        line-height: 41px;
+        cursor: pointer;
+        opacity: 0.8;
+        &:hover {
+          background: rgba(0, 0, 0, 0.9);
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
+
+.sizeContent {
+  width: 220px;
+  > .item {
+    display: flex;
+    align-items: center;
+    > p {
+      margin: 0;
+    }
+  }
+}

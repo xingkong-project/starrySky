@@ -1,0 +1,118 @@
+// 第三方组件
+import React from 'react';
+import { Popover, Slider } from 'antd';
+import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
+import { useReactive } from 'ahooks';
+
+// css
+import styles from './index.less';
+
+export interface IPreviewProps {
+  config?: {
+    width?: number | string;
+  };
+}
+
+const defaultConfig = {
+  width: 320,
+  height: 600,
+  scale: 1,
+};
+
+const Preview: React.FC<IPreviewProps> = () => {
+  // 私有变量
+  const state = useReactive({
+    defaultConfig: {
+      ...defaultConfig,
+    },
+  });
+
+  // 预览区可配置区域
+  const _style = () => {
+    return {
+      width: state.defaultConfig.width + 'px',
+      height: state.defaultConfig.height + 'px',
+      transform: `scale(${state.defaultConfig.scale})`,
+    };
+  };
+
+  const trimScale = (type: 'add' | 'cat') => {
+    if (
+      (type === 'add' && state.defaultConfig.scale >= 2) ||
+      (type === 'cat' && state.defaultConfig.scale <= 0.4)
+    )
+      return;
+    state.defaultConfig.scale = state.defaultConfig.scale + (type === 'add' ? 0.1 : -0.1);
+  };
+
+  // 调整尺寸
+  const sizeContent = (
+    <div className={styles.sizeContent}>
+      <div className={styles.item}>
+        <p>宽度</p>
+        <Slider
+          style={{ flex: 1 }}
+          value={state.defaultConfig.width}
+          onChange={(v) => {
+            state.defaultConfig.width = v;
+          }}
+          min={300}
+          max={600}
+          step={10}
+        />
+      </div>
+      <div className={styles.item}>
+        <p>高度</p>
+        <Slider
+          style={{ flex: 1 }}
+          value={state.defaultConfig.height}
+          onChange={(v) => {
+            state.defaultConfig.height = v;
+          }}
+          min={400}
+          max={1000}
+          step={10}
+        />
+      </div>
+    </div>
+  );
+  return (
+    <div className={styles.preview}>
+      {/* 预览区 */}
+      <section className={styles.previewBody} style={_style()}>
+        12
+      </section>
+      {/* 底部控制 */}
+      <div className={styles.footerConfig}>
+        <Popover content={sizeContent} trigger="click">
+          <div className={styles.configItem}>尺寸调整</div>
+        </Popover>
+        <div className={styles.configBox}>
+          <PlusOutlined
+            className={styles.item}
+            onClick={() => {
+              trimScale('add');
+            }}
+          />
+          <div className={styles.scaleText}>{Math.floor(state.defaultConfig.scale * 100)}%</div>
+          <MinusOutlined
+            className={styles.item}
+            onClick={() => {
+              trimScale('cat');
+            }}
+          />
+        </div>
+        <div
+          className={styles.configItem}
+          onClick={() => {
+            state.defaultConfig = { ...defaultConfig };
+          }}
+        >
+          恢复默认
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Preview;

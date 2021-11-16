@@ -1,0 +1,43 @@
+.dataConfigBody {
+  position: relative;
+  float: right;
+  height: 100%;
+  background: #fff;
+  box-shadow: 10px 0 20px 0 rgba(0, 35, 78, 0.04);
+  transition: all 0.2s;
+  > .switch {
+    position: absolute;
+    top: 50%;
+    left: -20px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    width: 40px;
+    height: 80px;
+    padding-left: 5px;
+    background: #fff;
+    border-radius: 5px 0 0 5px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    opacity: 0.8;
+    transition: all 0.1s;
+    &:hover {
+      left: -40px;
+      padding-left: 15px;
+    }
+  }
+  > .dataConfigContent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    > .searchBox {
+      > .title {
+        text-align: center;
+      }
+    }
+  }
+}

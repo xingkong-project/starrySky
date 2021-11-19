@@ -45,7 +45,7 @@ const Login: React.FC = () => {
 
             <Form.Item style={{ textAlign: 'center' }}>
               <Button type="primary" htmlType="submit" style={{ textAlign: 'center' }}>
-                登录
+                进入星球
               </Button>
             </Form.Item>
           </Form>

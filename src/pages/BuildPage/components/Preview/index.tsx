@@ -2,7 +2,7 @@
 import React from 'react';
 import { Popover, Slider } from 'antd';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
-import { useReactive } from 'ahooks';
+import { useReactive, useKeyPress } from 'ahooks';
 
 // css
 import styles from './index.less';
@@ -13,6 +13,7 @@ export interface IPreviewProps {
   };
 }
 
+// 默认可配置项
 const defaultConfig = {
   width: 320,
   height: 600,
@@ -36,6 +37,7 @@ const Preview: React.FC<IPreviewProps> = () => {
     };
   };
 
+  // 放大缩小
   const trimScale = (type: 'add' | 'cat') => {
     if (
       (type === 'add' && state.defaultConfig.scale >= 2) ||
@@ -45,7 +47,7 @@ const Preview: React.FC<IPreviewProps> = () => {
     state.defaultConfig.scale = state.defaultConfig.scale + (type === 'add' ? 0.1 : -0.1);
   };
 
-  // 调整尺寸
+  // 调整宽高
   const sizeContent = (
     <div className={styles.sizeContent}>
       <div className={styles.item}>
@@ -76,6 +78,17 @@ const Preview: React.FC<IPreviewProps> = () => {
       </div>
     </div>
   );
+
+  // 按键控制 - 放大缩小
+  useKeyPress(['-', '='], (event) => {
+    trimScale(event.key === '-' ? 'cat' : 'add');
+  });
+
+  // 按键控制 - 恢复默认
+  useKeyPress(['1'], () => {
+    state.defaultConfig = { ...defaultConfig };
+  });
+
   return (
     <div className={styles.preview}>
       {/* 预览区 */}

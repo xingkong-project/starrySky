@@ -52,6 +52,7 @@ const Material: React.FC<IMaterialProps> = (props) => {
       <div className={styles.materialContent}>
         <header className={styles.searchBox}>
           <Search placeholder="输入物料名称" enterButton="搜索物料" onSearch={onSearch} />
+          {/* <Input placeholder="输入物料名称" onSearch={onSearch} prefix={<SearchOutlined />} /> */}
         </header>
       </div>
     </div>

@@ -5,7 +5,6 @@ import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { history } from 'umi';
-import { rule } from '@/services/ant-design-pro/api';
 
 const PageList: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -96,7 +95,7 @@ const PageList: React.FC = () => {
             <PlusOutlined /> 新建页面
           </Button>,
         ]}
-        request={rule}
+        // request={rule}
         columns={columns}
       />
     </PageContainer>

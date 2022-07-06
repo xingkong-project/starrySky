@@ -70,9 +70,9 @@ const DataConfig: React.FC<IMaterialProps> = (props) => {
           expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
           style={{ background: '#FFF' }}
         >
-          {materialList.map(({ schema, moduleId, title }) => (
-            <Panel header={title} key={moduleId} className="site-collapse-custom-panel">
-              <SchemaForm moduleId={moduleId} schema={schema} onChange={handleOnChange} />
+          {materialList.map((item) => (
+            <Panel header={item.title} key={item.moduleId} className="site-collapse-custom-panel">
+              <SchemaForm {...item} onChange={handleOnChange} />
             </Panel>
           ))}
         </Collapse>

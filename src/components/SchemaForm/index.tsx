@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import FormRender, { useForm } from 'form-render';
 import type { SchemaBase } from 'form-render';
 
 interface ISchemaForm {
   moduleId: number;
+  props: Record<string, unknown>;
   schema: Partial<SchemaBase>;
   onChange: (moduleId: number, formData: any) => any;
 }
 
-const SchemaForm: React.FC<ISchemaForm> = ({ moduleId, schema, onChange }) => {
+const SchemaForm: React.FC<ISchemaForm> = ({ moduleId, schema, onChange, props }) => {
   const form = useForm();
+
+  /**
+   * 首次渲染填充默认值
+   */
+  useEffect(() => {
+    form.setValues(props);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   /**
    * 监听表单数据变化

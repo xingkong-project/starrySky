@@ -1,7 +1,6 @@
 // 第三方组件
 import React from 'react';
 import { useImmer } from 'use-immer';
-// import { message, Tabs } from 'antd';
 import { useReactive } from 'ahooks';
 
 // 私有组件 ｜ 方法
@@ -59,14 +58,12 @@ const Build: React.FC = () => {
             type: 'string',
             placeholder: '请输入',
             required: true,
-            default: '哈哈哈',
           },
           test_name: {
             title: '名字',
             type: 'string',
             placeholder: '请输入',
             required: true,
-            default: '宗纬',
           },
         },
       },
@@ -100,14 +97,12 @@ const Build: React.FC = () => {
             type: 'string',
             placeholder: '请输入',
             required: true,
-            default: '哈哈哈哈默认值',
           },
           test_name: {
             title: '名字',
             type: 'string',
             placeholder: '请输入',
             required: true,
-            default: '默认值宗纬',
           },
         },
       },
@@ -130,9 +125,6 @@ const Build: React.FC = () => {
       moduleId: 3,
       props: { desc: '哈哈哈', test_name: '宗纬' },
       // schema => 右侧表单 => props 改变 => 入库
-      // 保存之后，schema 的 default 需要同步更新
-      // schema 的 default，可以直接配置成 props.desc 这种，这样的话，db 只用存 schema 的结构
-      // props 来存具体的数据
       schema: {
         type: 'object',
         properties: {
@@ -141,14 +133,12 @@ const Build: React.FC = () => {
             type: 'string',
             placeholder: '请输入',
             required: true,
-            default: '哈哈哈',
           },
           test_name: {
             title: '名字',
             type: 'string',
             placeholder: '请输入',
             required: true,
-            default: '宗纬',
           },
         },
       },
@@ -182,14 +172,12 @@ const Build: React.FC = () => {
             type: 'string',
             placeholder: '请输入',
             required: true,
-            default: '哈哈哈',
           },
           test_name: {
             title: '名字',
             type: 'string',
             placeholder: '请输入',
             required: true,
-            default: '宗纬',
           },
         },
       },

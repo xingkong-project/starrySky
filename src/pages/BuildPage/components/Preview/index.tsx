@@ -3,11 +3,14 @@ import React from 'react';
 import { Popover, Slider } from 'antd';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import { useReactive, useKeyPress } from 'ahooks';
+import Webcomponents from '@/components/Webcomponents';
+import type { IMaterialItem } from '../../';
 
 // css
 import styles from './index.less';
 
 export interface IPreviewProps {
+  materialList: IMaterialItem[];
   config?: {
     width?: number | string;
   };
@@ -20,7 +23,7 @@ const defaultConfig = {
   scale: 1,
 };
 
-const Preview: React.FC<IPreviewProps> = () => {
+const Preview: React.FC<IPreviewProps> = ({ materialList = [] }) => {
   // 私有变量
   const state = useReactive({
     defaultConfig: {
@@ -93,7 +96,9 @@ const Preview: React.FC<IPreviewProps> = () => {
     <div className={styles.preview}>
       {/* 预览区 */}
       <section className={styles.previewBody} style={_style()}>
-        12
+        {materialList.map(({ name, url, options, moduleId, props }) => (
+          <Webcomponents key={moduleId} name={name} url={url} options={options} props={props} />
+        ))}
       </section>
       {/* 底部控制 */}
       <div className={styles.footerConfig}>

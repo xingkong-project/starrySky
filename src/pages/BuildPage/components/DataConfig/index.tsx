@@ -1,13 +1,21 @@
 // 第三方组件
 import React from 'react';
-// import { Input } from 'antd';
-import { CaretLeftFilled, CaretRightFilled } from '@ant-design/icons';
+import { CaretLeftFilled, CaretRightFilled, CaretRightOutlined } from '@ant-design/icons';
+import { Collapse, Button } from 'antd';
 import { useReactive } from 'ahooks';
+import type { IMaterialItem } from '../../';
+import SchemaForm from '@/components/SchemaForm';
 
 // css
 import styles from './index.less';
 
+import type { DraftFunction } from 'use-immer';
+
+const { Panel } = Collapse;
+
 export interface IMaterialProps {
+  materialList: IMaterialItem[];
+  setMaterialList: (args: DraftFunction<IMaterialItem[]> | IMaterialItem[]) => void;
   config?: {
     width?: number | string;
   };
@@ -15,12 +23,25 @@ export interface IMaterialProps {
 
 const DataConfig: React.FC<IMaterialProps> = (props) => {
   // props
-  const { config = { width: 350 } } = props;
+  const { config = { width: 350 }, materialList, setMaterialList } = props;
 
   // 私有变量
   const state = useReactive({
     switch: true, // 开关
   });
+
+  /**
+   * 根据 moduleId 更新页面组件数据
+   *
+   * @param moduleId
+   * @param formData
+   */
+  const handleOnChange = (moduleId: number, formData: any) => {
+    const targetIndex = materialList.findIndex((item) => item.moduleId === moduleId);
+    setMaterialList((draft) => {
+      draft[targetIndex].props = { ...formData };
+    });
+  };
 
   return (
     <div
@@ -44,6 +65,22 @@ const DataConfig: React.FC<IMaterialProps> = (props) => {
         <header className={styles.searchBox}>
           <h3 className={styles.title}>物料一配置</h3>
         </header>
+        <Collapse
+          bordered={false}
+          expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
+          style={{ background: '#FFF' }}
+        >
+          {materialList.map(({ schema, moduleId, title }) => (
+            <Panel header={title} key={moduleId} className="site-collapse-custom-panel">
+              <SchemaForm moduleId={moduleId} schema={schema} onChange={handleOnChange} />
+            </Panel>
+          ))}
+        </Collapse>
+        <div className={styles.savaData}>
+          <Button style={{ width: '100%' }} type="primary">
+            提交
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    function dynamicLoadJs(url) {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        // script.setAttribute('defer', true);
+        script.onload = () => resolve();
+        script.onerror = () => reject();
+        script.crossOrigin = 'anonymous';
+        script.src = url;
+        if (document.head.append) {
+          document.head.append(script);
+        } else {
+          document.getElementsByTagName('head')[0].appendChild(script);
+        }
+      });
+    }
+
+    // pageId 从 url 取, 通过接口获取数据
+    async function getPageData(pageId) {
+      return new Promise((resolve) => {
+        const xingkong = {}
+        xingkong.pageInfo = {
+          title: '星空 H5 测试页面',
+          style: {
+            background: '#9e9e9e',
+            padding: '20px',
+          }
+        }
+        xingkong.moduleList = [
+          {
+            name: 'react-test',
+            url: 'https://images.tuyacn.com/rms-static/5d5fe440-dccb-11ec-a0c1-c9688f19b248-1653552654468.js?tyName=react-test.umd.min(2).js',
+            options: {
+              propTypes: {
+                desc: String,
+                test_name: String,
+              },
+              shadow: true,
+              styles: [
+                'https://images.tuyacn.com/rms-static/5d600b50-dccb-11ec-a0c1-c9688f19b248-1653552654469.css?tyName=react-test.umd.min(1).css',
+              ],
+            },
+            moduleId: 100,
+            props: { desc: '哈哈哈', test_name: '宗纬' },
+          },
+          {
+            name: 'react-test',
+            url: 'https://images.tuyacn.com/rms-static/5d5fe440-dccb-11ec-a0c1-c9688f19b248-1653552654468.js?tyName=react-test.umd.min(2).js',
+            options: {
+              propTypes: {
+                desc: String,
+                test_name: String,
+              },
+              shadow: true,
+              styles: [
+                'https://images.tuyacn.com/rms-static/5d600b50-dccb-11ec-a0c1-c9688f19b248-1653552654469.css?tyName=react-test.umd.min(1).css',
+              ],
+            },
+            moduleId: 101,
+            props: { desc: '哈哈哈不一样哦', test_name: '宗纬' },
+          }
+        ]
+
+        resolve(xingkong);
+      })
+    };
+
+    async function initReact() {
+      const jsList = ['https://unpkg.com/react@17/umd/react.production.min.js', 'https://unpkg.com/react-dom@17/umd/react-dom.production.min.js'];
+      await dynamicLoadJs(jsList[0]);
+      await dynamicLoadJs(jsList[1]);
+    }
+
+    async function makeXingkong() {
+      const { pageInfo, moduleList } = await getPageData();
+      const { title, style } = pageInfo;
+      document.title = title;
+      Object.keys(style || {}).forEach(item => {
+        document.body.style[item] = style[item];
+      });
+
+      const jsList = [
+        'https://unpkg.com/@magic-microservices/magic@latest/dist/index.umd.min.js',
+      ];
+      jsList.concat(moduleList.map(item => item.url));
+      await Promise.all([...jsList.map(src => dynamicLoadJs(src)), initReact()]);
+
+      // 注册 module 为 webcomponents
+      const moduleMap = {};
+      moduleList.forEach(async ({ name, moduleId, url, options }) => {
+        const moduleName = `${name}-${moduleId}`;
+        // 防止重复注册
+        if (moduleMap[moduleName]) return;
+
+        // 动态加载模块
+        await dynamicLoadJs(url);
+
+        // 注册
+        magic(moduleName, window[name], options);
+        moduleMap[moduleName] = true;
+      });
+
+      // 赋值并渲染 webcomponents
+      moduleList.forEach(({ name, moduleId, props }) => {
+        const element = document.createElement(`${name}-${moduleId}`);
+        Object.keys(props || {}).forEach(key => {
+          element.setAttribute(key, magic.useProps(props[key]))
+        });
+        document.body.append(element);
+      });
+    }
+
+    makeXingkong();
+  </script>
+</body>
+
+</html>

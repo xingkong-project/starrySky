@@ -15,28 +15,29 @@ interface IWebcomponentsInput extends IRegisterInput {
  */
 export default function Webcomponents({
   name,
-  moduleScriptUrl,
+  url,
   options = {},
   props = {},
 }: IWebcomponentsInput) {
   const registered = customElements.get(name);
 
   // useProps 包裹 props
-  Object.keys(props).forEach((key) => {
+  const magicProps = { ...props };
+  Object.keys(magicProps).forEach((key) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    props[key] = useProps(props[key]);
+    magicProps[key] = useProps(magicProps[key]);
   });
-  const element = React.createElement(name, props);
+  const element = <div style={{ height: 'auto' }}>{React.createElement(name, magicProps)}</div>;
 
   if (registered) {
-    return <div style={{ height: 'auto' }}>{element}</div>;
+    return element;
   }
 
   registerWebcomponents({
     name,
-    moduleScriptUrl,
+    url,
     options,
   });
 
-  return <div style={{ height: 'auto' }}>{element}</div>;
+  return element;
 }
